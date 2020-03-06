@@ -41,8 +41,37 @@ initial text={}
   Построить эквивалентные:
   \begin{enumerate}
     \item Недетерминированный конечный автомат
-    \item Недетерминированный конечный автомат без $\varepsilon$-переходов
-    \item Минимальный полный детерминированный конечный автомат
+    \item Недетерминированный конечный автомат без $\varepsilon$-переходов \\
+    \textbf{Решение:} \\
+    Данное регулярное выражение эквивалентно \[ (a \mid b)^+ (a \mid b)^+\], т.к. оба автомата задают язык <<произвольная последовательность a и b длины не менее $2$>>. \\
+    \begin{myauto}
+      \node[state]           (q_1)                {$q_1$};
+      \node[state,initial]   (q_0) [left=of  q_1] {$q_0$};
+
+      \node[state,accepting] (q_2) [right=of q_1] {$q_2$};
+
+      \path[->](q_0) edge     node [above] {$a, b$}       (q_1)
+      (q_1) edge [loop above] node [above] {$a, b$}    ()
+          edge              node [above] {$a, b$}    (q_2)
+      (q_2) edge [loop above] node [above] {$a, b$}    ()
+
+      ;
+    \end{myauto}  
+    \item Минимальный полный детерминированный конечный автомат \\
+    \textbf{Решение:} \\
+    \begin{myauto}
+      \node[state]           (q_1)                {$q_1$};
+      \node[state,initial]   (q_0) [left=of  q_1] {$q_0$};
+
+      \node[state,accepting] (q_2) [right=of q_1] {$q_2$};
+
+      \path[->](q_0) edge     node [above] {$a, b$}       (q_1)
+      (q_1) edge              node [above] {$a, b$}    (q_2)
+      (q_2) edge [loop above] node [above] {$a, b$}    ()
+
+      ;
+    \end{myauto}
+     Автомат минимален, т.к. во всех словах есть хотя бы две буквы, а значит меньше 3 состояний быть не может. \\
   \end{enumerate}
   \item Построить регулярное выражение, распознающее тот же язык, что и автомат:
   \begin{myauto}
