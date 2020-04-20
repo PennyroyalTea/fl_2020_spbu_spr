@@ -5,7 +5,7 @@ import Data.Char (isDigit, digitToInt)
 import qualified Sum (parseNum, splitOn) 
 
 import Data.List (intercalate)
-import Data.Maybe (fromJust)
+import Data.Maybe (fromJust, isJust)
 import Control.Applicative ((<|>))
 
 -- "1+2*3+4*2" -> 15
@@ -23,7 +23,8 @@ data AST = BinOp Operator AST AST
 -- Между числами и знаками операций по одному пробелу
 -- BinOp Plus (Num 13) (Num 42) -> "13 42 +"
 toPostfix :: AST -> String
-toPostfix ast = error "toPostfix not implemented"
+toPostfix (Num x)           = show x
+toPostfix (BinOp op t1 t2)  = toPostfix t1 ++ (' ' : toPostfix t2) ++ (' ' : show op)
 
 -- Парсит выражение в постфиксной записи 
 -- Выражение принимается только целиком (не максимально длинный префикс)
@@ -32,15 +33,21 @@ toPostfix ast = error "toPostfix not implemented"
 -- "1 2 3 +" -> Nothing
 -- "1 2 + *" -> Nothing 
 fromPostfix :: String -> Maybe AST 
-fromPostfix input = error "fromPostfix not implemented"
-
+fromPostfix input = fromPostfix' input []
+  where fromPostfix' (' ':s) l = fromPostfix' s l -- skip spaces
+        fromPostfix' s (t2 : t1 : rest) | isJust $ parseOp s = fromPostfix' (snd $ fromJust $ parseOp s) (BinOp (fst $ fromJust $ parseOp s) t1 t2 : rest)
+        fromPostfix' s l | isJust $ parseNum s  = fromPostfix' (snd $ fromJust $ parseNum s) ((fst $ fromJust $ parseNum s) : l)
+        fromPostfix' "" [ast]                   = Just ast
+        fromPostfix' _ _                        = Nothing
 -- Парсит левую скобку
 parseLbr :: String -> Maybe ((), String)
-parseLbr = error "parseLbr not implemented"
+parseLbr ('(' : rest) = Just ((), rest)
+parseLbr _            = Nothing
 
 -- Парсит правую скобку
 parseRbr :: String -> Maybe ((), String)
-parseRbr = error "parseRbr not implemented"
+parseRbr (')' : rest) = Just ((), rest)
+parseRbr _            = Nothing
 
 parseExpr :: String -> Maybe (AST, String)
 parseExpr input = parseSum input
@@ -49,7 +56,11 @@ parseNum :: String -> Maybe (AST, String)
 parseNum input = 
     let (num, rest) = span isDigit input in 
     case num of 
-      [] -> Nothing  
+      [] -> do
+        (_, s1) <- parseLbr rest
+        (res, s2) <- parseSum s1
+        (_, s3) <- parseRbr s2
+        return (res, s3)
       xs -> Just (Num $ Sum.parseNum xs, rest)
   
   
