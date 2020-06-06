@@ -16,9 +16,9 @@ class bcolors:
     UNDERLINE = '\033[4m'
 
 if __name__ == '__main__':
-	tree, syntax_error = parse_file(sys.argv[1])
-		if (syntax_error) :
-			print(f"{bcolors.FAIL} SYNTAX_ERROR {bcolors.ENDC}")
-		else :
-			print(f"{bcolors.OKGREEN} NO SYNTAX ERRORS {bcolors.ENDC}")
-		print(format_tree(tree, format_node=itemgetter(0), get_children=itemgetter(1)))
+    tree, syntax_error = parse_file(sys.argv[1])
+    if (syntax_error) :
+        print(f"{bcolors.FAIL} SYNTAX_ERROR {bcolors.ENDC}")
+    else :
+        print(f"{bcolors.OKGREEN} NO SYNTAX ERRORS {bcolors.ENDC}")
+    print(format_tree(tree, format_node=itemgetter(0), get_children=itemgetter(1)))
