@@ -1,0 +1,2 @@
+or(A, B, kek(C, D)) :- and(B, D).
+?- kek(D,C), or(M, N).
