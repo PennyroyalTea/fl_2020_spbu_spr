@@ -105,6 +105,8 @@ compute (BinOp op l r) = optimize (BinOp op (compute l) (compute r))
 compute node = optimize node
 
 optimize :: AST -> AST -- optimize 1 level
+optimize (BinOp Plus (Num x) (Num y)) = Num $ x + y
+optimize (BinOp Mult (Num x) (Num y)) = Num $ x * y
 optimize (BinOp Plus (Num 0) y) = y
 optimize (BinOp Plus x (Num 0)) = x
 optimize (BinOp Mult (Num 1) y) = y

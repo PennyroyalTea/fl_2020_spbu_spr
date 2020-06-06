@@ -18,3 +18,4 @@ unit_simplify = do
   simplify "1*x" @?= Just "x"
   simplify "(a+b)*c" @?= Just "(a+b)*c"
   simplify "(x+y)*(1+0)" @?= Just "x+y"
+  simplify "2*2+2" @?= Just "6"
