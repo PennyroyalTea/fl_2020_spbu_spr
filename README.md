@@ -1,8 +1,25 @@
-# Репозиторий курса формальных языков
+# Допзадание 11
 
-* Для сдачи домашних заданий сделайте себе форк этого репозитория (кнопка Fork справа вверху). Работайте в своем форке. 
-* Домашние задания будут появляться в отдельных ветках (HW01, HW02...), выполнять их следует в одноименных ветках. 
-* Сдавайте домашние задания при помощи пулл-реквестов. 
-  * Для этого запушьте свои изменения себе в репозиторий и нажмите на кнопку New pull request.
-  * Если надо будет что-то исправлять, я вам напишу об этом в комментарии к пулл реквесту. 
-  * Когда я приму задание, я закрою ваш пулл реквест.
+Запуск приложения: `python3 build_tree.py file`, где `file` -- адрес файла с программой.
+
+Для работы требуются библиотеки [`PLY`](https://github.com/dabeaz/ply) и [`tree-format`](https://github.com/jml/tree-format)
+
+Грамматика:
+```
+program → goal
+program → relation goal
+relation → atom .
+relation → atom . relation
+relation → atom :- body .
+relation → atom :- body . relation
+goal → ?- .
+goal → ?- body .
+atom → ID
+atom → ID ( args )
+args → atom
+args → VAR
+args → atom , args
+args → VAR , args
+body → atom
+body → atom , body
+```
