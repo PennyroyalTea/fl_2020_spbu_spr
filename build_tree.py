@@ -16,8 +16,7 @@ class bcolors:
     UNDERLINE = '\033[4m'
 
 if __name__ == '__main__':
-	with open('tree.txt', 'w') as file:
-		tree, syntax_error = parse_file(sys.argv[1])
+	tree, syntax_error = parse_file(sys.argv[1])
 		if (syntax_error) :
 			print(f"{bcolors.FAIL} SYNTAX_ERROR {bcolors.ENDC}")
 		else :
